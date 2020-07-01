@@ -4,6 +4,7 @@ target/
 !**/src/main/**
 !**/src/test/**
 .metadata/
+application.properties
 
 ### STS ###
 .apt_generated
