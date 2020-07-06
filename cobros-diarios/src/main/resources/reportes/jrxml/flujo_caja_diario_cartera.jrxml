@@ -20,17 +20,18 @@
 	<field name="totalPrestado" class="java.lang.Double"/>
 	<field name="totalGasto" class="java.lang.Double"/>
 	<field name="totalMulta" class="java.lang.Double"/>
+	<field name="observaciones" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
 	<title>
 		<band height="43" splitType="Stretch">
 			<staticText>
-				<reportElement x="0" y="0" width="506" height="43" uuid="0ba468ce-a4a2-4be4-8eb4-17634d595c0b"/>
+				<reportElement x="0" y="0" width="575" height="43" uuid="0ba468ce-a4a2-4be4-8eb4-17634d595c0b"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Serif" size="14" isBold="true"/>
 				</textElement>
-				<text><![CDATA[REPORTE FLUJO DE CAJA DIARIO]]></text>
+				<text><![CDATA[REPORTE FLUJO DE CAJA]]></text>
 			</staticText>
 		</band>
 	</title>
@@ -38,7 +39,7 @@
 		<band splitType="Stretch"/>
 	</pageHeader>
 	<columnHeader>
-		<band height="41" splitType="Stretch">
+		<band height="45" splitType="Stretch">
 			<staticText>
 				<reportElement mode="Opaque" x="0" y="0" width="75" height="40" backcolor="#BFBFBF" uuid="1dad7a5f-7ee8-4803-8a6c-0b9ebb4c4ecd">
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
@@ -72,7 +73,7 @@
 				<text><![CDATA[FECHA FIN]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="236" y="0" width="90" height="40" backcolor="#BFBFBF" uuid="a176bdd6-d81a-49b1-b792-c6335da0c9c2">
+				<reportElement mode="Opaque" x="230" y="0" width="102" height="40" backcolor="#BFBFBF" uuid="a176bdd6-d81a-49b1-b792-c6335da0c9c2">
 					<property name="com.jaspersoft.studio.unit.y" value="px"/>
 				</reportElement>
 				<box>
@@ -88,7 +89,7 @@
 				<text><![CDATA[PRESTAMOS]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="326" y="0" width="90" height="40" backcolor="#BFBFBF" uuid="95e7c328-068f-4195-8253-30aa5ed0c8aa">
+				<reportElement mode="Opaque" x="332" y="0" width="74" height="40" backcolor="#BFBFBF" uuid="95e7c328-068f-4195-8253-30aa5ed0c8aa">
 					<property name="com.jaspersoft.studio.unit.y" value="px"/>
 				</reportElement>
 				<box>
@@ -104,7 +105,7 @@
 				<text><![CDATA[GASTOS]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="416" y="0" width="90" height="40" backcolor="#BFBFBF" uuid="671e2476-21de-435d-bb5e-3bedc80dd4be">
+				<reportElement mode="Opaque" x="406" y="0" width="74" height="40" backcolor="#BFBFBF" uuid="671e2476-21de-435d-bb5e-3bedc80dd4be">
 					<property name="com.jaspersoft.studio.unit.y" value="px"/>
 				</reportElement>
 				<box>
@@ -120,7 +121,7 @@
 				<text><![CDATA[MULTAS]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="150" y="0" width="86" height="40" backcolor="#BFBFBF" uuid="2d571cd5-1dc8-4ecf-bd4b-fae974967717"/>
+				<reportElement mode="Opaque" x="150" y="0" width="80" height="40" backcolor="#BFBFBF" uuid="2d571cd5-1dc8-4ecf-bd4b-fae974967717"/>
 				<box>
 					<pen lineWidth="0.0"/>
 					<topPen lineWidth="0.25"/>
@@ -133,11 +134,27 @@
 				</textElement>
 				<text><![CDATA[COBROS]]></text>
 			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="480" y="0" width="95" height="40" backcolor="#BFBFBF" uuid="1886e792-3083-4fce-9ce8-cb771ae0f569">
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.0"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[OBSERVACIONES]]></text>
+			</staticText>
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="30" splitType="Stretch">
-			<textField isBlankWhenNull="true">
+		<band height="36" splitType="Stretch">
+			<textField pattern="d/M/yy h:mm a" isBlankWhenNull="true">
 				<reportElement x="0" y="0" width="75" height="30" uuid="1a25f1c0-e345-43b2-9792-63c172793912"/>
 				<box>
 					<pen lineWidth="0.0"/>
@@ -148,7 +165,7 @@
 				</box>
 				<textFieldExpression><![CDATA[$F{fechaCreacion}]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="true">
+			<textField pattern="d/M/yy h:mm a" isBlankWhenNull="true">
 				<reportElement x="75" y="0" width="75" height="30" uuid="8ab50183-d56d-40bc-ad23-4506264fb645">
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
@@ -161,8 +178,8 @@
 				</box>
 				<textFieldExpression><![CDATA[$F{fechaConfirmacion}]]></textFieldExpression>
 			</textField>
-			<textField pattern="¤#,##0.###;¤(#,##0.###-)" isBlankWhenNull="true">
-				<reportElement x="150" y="0" width="86" height="30" uuid="2e2e32c1-1685-4eca-a19a-59e3c7a7c940"/>
+			<textField pattern="#,##0.###" isBlankWhenNull="true">
+				<reportElement x="150" y="0" width="80" height="30" uuid="2e2e32c1-1685-4eca-a19a-59e3c7a7c940"/>
 				<box>
 					<pen lineWidth="0.0"/>
 					<topPen lineWidth="0.25"/>
@@ -170,10 +187,11 @@
 					<bottomPen lineWidth="0.25"/>
 					<rightPen lineWidth="0.25"/>
 				</box>
+				<textElement rotation="Right"/>
 				<textFieldExpression><![CDATA[$F{totalRecaudado}]]></textFieldExpression>
 			</textField>
 			<textField pattern="¤#,##0.###;¤(#,##0.###-)" isBlankWhenNull="true">
-				<reportElement x="236" y="0" width="90" height="30" uuid="fff7b7ac-96fa-4b00-b84e-f5e7acfd48cd"/>
+				<reportElement x="230" y="0" width="102" height="30" uuid="fff7b7ac-96fa-4b00-b84e-f5e7acfd48cd"/>
 				<box>
 					<pen lineWidth="0.0"/>
 					<topPen lineWidth="0.25"/>
@@ -184,7 +202,7 @@
 				<textFieldExpression><![CDATA[$F{totalPrestado}]]></textFieldExpression>
 			</textField>
 			<textField pattern="¤#,##0.###;¤(#,##0.###-)" isBlankWhenNull="true">
-				<reportElement x="326" y="0" width="90" height="30" uuid="0d73d008-1212-4dec-86b5-b2b17842148a"/>
+				<reportElement x="332" y="0" width="74" height="30" uuid="0d73d008-1212-4dec-86b5-b2b17842148a"/>
 				<box>
 					<pen lineWidth="0.0"/>
 					<topPen lineWidth="0.25"/>
@@ -195,7 +213,7 @@
 				<textFieldExpression><![CDATA[$F{totalGasto}]]></textFieldExpression>
 			</textField>
 			<textField pattern="¤#,##0.###;¤(#,##0.###-)" isBlankWhenNull="true">
-				<reportElement x="416" y="0" width="90" height="30" uuid="1327fc5e-eb43-4308-8c43-c77d641b4f5a"/>
+				<reportElement x="406" y="0" width="74" height="30" uuid="1327fc5e-eb43-4308-8c43-c77d641b4f5a"/>
 				<box>
 					<pen lineWidth="0.0"/>
 					<topPen lineWidth="0.25"/>
@@ -204,6 +222,10 @@
 					<rightPen lineWidth="0.25"/>
 				</box>
 				<textFieldExpression><![CDATA[$F{totalMulta}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="480" y="0" width="95" height="30" isPrintWhenDetailOverflows="true" uuid="452e73fe-529a-4d55-a4bb-7d97afd8608b"/>
+				<textFieldExpression><![CDATA[$F{observaciones}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

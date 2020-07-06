@@ -31,10 +31,13 @@ import com.mbaront.cobros.diarios.model.entidades.CuadreDiario;
 import com.mbaront.cobros.diarios.model.entidades.Gasto;
 import com.mbaront.cobros.diarios.model.entidades.PagoCliente;
 import com.mbaront.cobros.diarios.model.entidades.Prestamo;
+import com.mbaront.cobros.diarios.model.entidades.Ruta;
 import com.mbaront.cobros.diarios.model.services.GastoServiceImpl;
 import com.mbaront.cobros.diarios.model.services.ICuadreDiarioService;
 import com.mbaront.cobros.diarios.model.services.IPagoClienteService;
 import com.mbaront.cobros.diarios.model.services.IPrestamoService;
+import com.mbaront.cobros.diarios.model.services.IRutaService;
+import com.mbaront.cobros.diarios.model.services.RutaServiceImpl;
 
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperExportManager;
@@ -57,6 +60,8 @@ public class CuadreDiarioController {
 	private IPrestamoService prestamoService;
 	@Autowired
 	private GastoServiceImpl gastoService;
+	@Autowired
+	private IRutaService rutaServiceImpl;
 	
 	private static final Logger logger = LoggerFactory.getLogger(CuadreDiarioController.class);
 
@@ -236,8 +241,8 @@ public class CuadreDiarioController {
 		
 	}
 	
-	@GetMapping("/flujo-caja")
-	public void getDocumentFlujoCajaDiario(HttpServletResponse response) throws IOException, JRException, URISyntaxException  {
+	@GetMapping("/flujo-caja/{idCartera}")
+	public void getDocumentFlujoCajaDiario(HttpServletResponse response, @PathVariable Long idCartera) throws IOException, JRException, URISyntaxException  {
 		
 		
 		Calendar fechaInicio = Calendar.getInstance();
@@ -252,10 +257,9 @@ public class CuadreDiarioController {
         fechaFin.set(Calendar.MINUTE, 0);
         fechaFin.set(Calendar.SECOND, 0);
         
+        Ruta ruta = rutaServiceImpl.findById(idCartera);
         
-		
-        System.out.println(fechaFin.getTime());
-		List<CuadreDiario> cuadresDiario = cuadreDiarioService.findFechaCreacionBetween(fechaInicio.getTime(), fechaFin.getTime());
+		List<CuadreDiario> cuadresDiario = cuadreDiarioService.findByCarteraAndFechaCreacionBetween(ruta,fechaInicio.getTime(), fechaFin.getTime());
 		
 		
 		// creating datasource from bean list

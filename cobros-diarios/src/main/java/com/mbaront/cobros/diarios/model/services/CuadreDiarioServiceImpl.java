@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.mbaront.cobros.diarios.model.dao.ICuadreDiarioDao;
 import com.mbaront.cobros.diarios.model.entidades.CuadreDiario;
+import com.mbaront.cobros.diarios.model.entidades.Ruta;
 
 @Service
 public class CuadreDiarioServiceImpl implements ICuadreDiarioService {
@@ -39,5 +40,11 @@ public class CuadreDiarioServiceImpl implements ICuadreDiarioService {
 	public List<CuadreDiario> findAll() {
 		return (List<CuadreDiario>) cuadreDiarioDao.findAll();
 	}
+
+	@Override
+	public List<CuadreDiario> findByCarteraAndFechaCreacionBetween(Ruta cartera, Date fechaInicial, Date fechaFinal) {
+		return cuadreDiarioDao.findByCarteraAndFechaCreacionBetween(cartera, fechaInicial, fechaFinal);
+	}
+
 
 }
