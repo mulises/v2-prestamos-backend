@@ -178,7 +178,7 @@
 				</box>
 				<textFieldExpression><![CDATA[$F{fechaConfirmacion}]]></textFieldExpression>
 			</textField>
-			<textField pattern="#,##0.###" isBlankWhenNull="true">
+			<textField isBlankWhenNull="true">
 				<reportElement x="150" y="0" width="80" height="30" uuid="2e2e32c1-1685-4eca-a19a-59e3c7a7c940"/>
 				<box>
 					<pen lineWidth="0.0"/>
@@ -187,7 +187,7 @@
 					<bottomPen lineWidth="0.25"/>
 					<rightPen lineWidth="0.25"/>
 				</box>
-				<textElement rotation="Right"/>
+				<textElement rotation="None"/>
 				<textFieldExpression><![CDATA[$F{totalRecaudado}]]></textFieldExpression>
 			</textField>
 			<textField pattern="¤#,##0.###;¤(#,##0.###-)" isBlankWhenNull="true">
