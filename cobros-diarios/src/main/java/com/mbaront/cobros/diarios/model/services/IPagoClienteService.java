@@ -16,4 +16,5 @@ public interface IPagoClienteService {
 	
 	public List<PagoCliente> pagosByPeriodoTiempo(Date fechaInicio, Date fechaFin);
 	public List<PagoCliente> findPagosByRutaAndFechaInicio(Date fechaInicio, Ruta ruta);
+	public List<PagoCliente> findByBetweenFecha(Date fechaInicio, Date fechaFin, Long ruta);
 }

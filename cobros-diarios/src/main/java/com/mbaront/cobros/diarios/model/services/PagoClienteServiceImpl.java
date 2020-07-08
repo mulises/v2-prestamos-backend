@@ -72,4 +72,9 @@ public class PagoClienteServiceImpl implements IPagoClienteService{
 		return pagoClienteDao.findByFechaPagoAfterAndPrestamoClienteRuta(fechaInicio, ruta);
 	}
 
+	@Override
+	public List<PagoCliente> findByBetweenFecha(Date fechaInicio, Date fechaFin, Long idCartera) {
+		return pagoClienteDao.findByBetweenFecha(fechaInicio, fechaFin, idCartera);
+	}
+
 }

@@ -21,4 +21,8 @@ public interface IPagoClienteDao extends CrudRepository<PagoCliente, Long>{
 	public List<PagoCliente> findByFechaPagoAfter(Date fechaInicio);
 	public List<PagoCliente> findByFechaPagoAfterAndPrestamoClienteRuta(Date fechaInicio, Ruta ruta);
 	
+	@Query("select a from PagoCliente a where date(a.fechaPago) >= ?1 and date(a.fechaPago) <= ?2 and a.prestamo.cliente.ruta.id = ?3")
+	public List<PagoCliente> findByBetweenFecha(Date fechaInicio,Date fechaFin, Long idRuta);
+	
+	
 }

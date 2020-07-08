@@ -52,4 +52,9 @@ public class PrestamoServiceImpl implements IPrestamoService{
 		return prestamoDao.findByFechaPrestamoAfterAndClienteRuta(fechaInicio, ruta);
 	}
 
+	@Override
+	public List<Prestamo> findPrestamoBetweenFecha(Date fechaInicio, Date fechaFin, Long idCartera) {
+		return prestamoDao.findPrestamoBetweenFecha(fechaInicio, fechaFin, idCartera);
+	}
+
 }

@@ -24,4 +24,7 @@ public interface IPrestamoDao extends CrudRepository<Prestamo, Long>{
 	
 	public List<Prestamo> findByFechaPrestamoAfterAndClienteRuta(Date fechaInicio, Ruta ruta);
 	
+	@Query("select a from Prestamo a where date(a.fechaPrestamo) >= ?1 and date(a.fechaPrestamo) <= ?2 and a.cliente.ruta.id = ?1")
+	public List<Prestamo> findPrestamoBetweenFecha(Date fechaInicio,Date fechaFin,Long idCartera);
+	
 }

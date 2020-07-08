@@ -58,8 +58,8 @@ public class PrestamoController {
 		
 		//List<Prestamo> prestamosActivos = prestamoService.findByClienteAndActivoTrue(prestamoRequest.getCliente());
 		
-		double totalPagosClientesDia = totalPagosClientesDia(clientePrestamo);
-		double totalPrestamosClientesDia = totalPrestamosClientesDia(clientePrestamo);
+		double totalPagosClientesDia = totalPagosClientesDia(cuadreDiario);
+		double totalPrestamosClientesDia = totalPrestamosClientesDia(cuadreDiario);
 		
 		double resumenCuadreDiario = (cuadreDiario.getValorBase() + totalPagosClientesDia - totalPrestamosClientesDia);
 		double montoPrestamoRequest = creditoRequest.getMontoPrestamo();
@@ -93,8 +93,8 @@ public class PrestamoController {
 		Cliente clientePrestamo = clienteService.findById(creditoRequest.getCliente().getId());
 		CuadreDiario cuadreDiario = cuadreDiarioService.findCuadreDiarioActivoByIdRuta(clientePrestamo.getRuta().getId());
 		
-		double totalPagosClientesDia = totalPagosClientesDia(clientePrestamo);
-		double totalPrestamosClientesDia = totalPrestamosClientesDia(clientePrestamo);
+		double totalPagosClientesDia = totalPagosClientesDia(cuadreDiario);
+		double totalPrestamosClientesDia = totalPrestamosClientesDia(cuadreDiario);
 		
 		double resumenCuadreDiario = (cuadreDiario.getValorBase() + totalPagosClientesDia - totalPrestamosClientesDia);
 		double montoPrestamoRequest = creditoRequest.getMontoPrestamo();
@@ -194,10 +194,18 @@ public class PrestamoController {
 	////////////////////////////////METODOS PRIVADOS//////////////////////////////////////////
 	//////////////////////////////////////////////////////////////////////////////////////////
 	
-	private Double totalPagosClientesDia(Cliente clientePrestamo) {
+	private Double totalPagosClientesDia(CuadreDiario cuadreDiario) {
 		
+		
+		Date fechaFin = new Date();
+		
+		if(cuadreDiario.getFechaConfirmacion() != null) {
+			fechaFin = cuadreDiario.getFechaConfirmacion();
+		}
 		// Se calcula el valor total de las cuotas cobradas
-		List<PagoCliente> pagosClientesDiario = pagoClienteService.reporteDiarioPago(clientePrestamo.getRuta().getId());
+		List<PagoCliente> pagosClientesDiario = 
+				pagoClienteService.findByBetweenFecha(cuadreDiario.getFechaCreacion(),fechaFin,cuadreDiario.getCartera().getId());
+		
 		double totalPagosClientesDia = 0;
 		for (PagoCliente pagoCliente : pagosClientesDiario) {
 			totalPagosClientesDia += pagoCliente.getValorPago();
@@ -206,9 +214,15 @@ public class PrestamoController {
 		return totalPagosClientesDia;
 	}
 	
-	private Double totalPrestamosClientesDia(Cliente clientePrestamo) {
+	private Double totalPrestamosClientesDia(CuadreDiario cuadreDiario) {
+		
+		Date fechaFin = new Date();
+		
+		if(cuadreDiario.getFechaConfirmacion() != null) {
+			fechaFin = cuadreDiario.getFechaConfirmacion();
+		}
 		// Se calcula el valor total de llos prestamos realizados
-		List<Prestamo> prestamosClientesDiario = prestamoService.reporteDiarioPrestamos(clientePrestamo.getRuta().getId());
+		List<Prestamo> prestamosClientesDiario = prestamoService.findPrestamoBetweenFecha(cuadreDiario.getFechaCreacion(),fechaFin, cuadreDiario.getCartera().getId());
 		double totalPrestamosClientesDia = 0;
 		for (Prestamo prestamo : prestamosClientesDiario) {
 			totalPrestamosClientesDia += prestamo.getMontoPrestamo();
