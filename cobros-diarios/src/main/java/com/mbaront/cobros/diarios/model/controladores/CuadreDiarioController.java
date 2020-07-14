@@ -241,27 +241,31 @@ public class CuadreDiarioController {
 		
 	}
 	
-	@GetMapping("/flujo-caja/{idCartera}")
-	public void getDocumentFlujoCajaDiario(HttpServletResponse response, @PathVariable Long idCartera) throws IOException, JRException, URISyntaxException  {
+	@GetMapping("/flujo-caja/{idCartera}/{fechaInicio}/{fechaFin}")
+	public void getDocumentFlujoCajaDiario(HttpServletResponse response, @PathVariable Long idCartera, @PathVariable Date fechaInicio,
+			@PathVariable Date fechaFin) throws IOException, JRException, URISyntaxException  {
 		
 		
-		Calendar fechaInicio = Calendar.getInstance();
-		fechaInicio.set(2020, 1, 1);
-		fechaInicio.set(Calendar.HOUR_OF_DAY, 0);
-		fechaInicio.set(Calendar.MINUTE, 0);
-		fechaInicio.set(Calendar.SECOND, 0);
+		Calendar fechaInicial = Calendar.getInstance();
+		fechaInicial.set(fechaInicio.getYear()+1900 ,fechaInicio.getMonth(), fechaInicio.getDate());
+		fechaInicial.set(Calendar.HOUR_OF_DAY, 0);
+		fechaInicial.set(Calendar.MINUTE, 0);
+		fechaInicial.set(Calendar.SECOND, 0);
         
-        Calendar fechaFin = Calendar.getInstance();
-        fechaFin.set(2020, 5, 30);
-        fechaFin.set(Calendar.HOUR_OF_DAY, 0);
-        fechaFin.set(Calendar.MINUTE, 0);
-        fechaFin.set(Calendar.SECOND, 0);
-        
+        Calendar fechaFinal = Calendar.getInstance();
+        fechaFinal.set(fechaFin.getYear()+1900, fechaFin.getMonth(), fechaFin.getDate());
+        fechaFinal.set(Calendar.HOUR_OF_DAY, 23);
+        fechaFinal.set(Calendar.MINUTE, 59);
+        fechaFinal.set(Calendar.SECOND, 59);
+                
         Ruta ruta = rutaServiceImpl.findById(idCartera);
         
-		List<CuadreDiario> cuadresDiario = cuadreDiarioService.findByCarteraAndFechaCreacionBetween(ruta,fechaInicio.getTime(), fechaFin.getTime());
+        System.out.println("fecha Inicio " + fechaInicial.getTime());
+        System.out.println("fecha Inicio " + fechaFinal.getTime());
+        
+		List<CuadreDiario> cuadresDiario = cuadreDiarioService.findByCarteraAndFechaCreacionBetween(ruta,fechaInicial.getTime(), fechaFinal.getTime());
 		
-		
+			
 		// creating datasource from bean list
 		JRBeanCollectionDataSource beanColDataSource = new JRBeanCollectionDataSource(cuadresDiario);
 		
