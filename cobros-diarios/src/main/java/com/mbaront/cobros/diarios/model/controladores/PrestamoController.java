@@ -148,6 +148,11 @@ public class PrestamoController {
 		return new ResponseEntity<List<Prestamo>>(prestamosActivosByRuta, HttpStatus.OK);
 	}
 	
+	/**
+	 * Lista de creditos sin cobros en un cuadre de caja
+	 * @param idRuta
+	 * @return lista de creditos que no han realizado pagos dentro del cuadre de caja activo
+	 */
 	@GetMapping("/prestamos-para-cobro/{idRuta}")
 	public ResponseEntity<?> findAllPrestamosParaCobroByRuta(@PathVariable Long idRuta) {
 
@@ -241,18 +246,28 @@ public class PrestamoController {
 	
 	private boolean buscarDisponiblesParaCobro(Prestamo credito) {
 		Date hoy = new Date();
+		Calendar calendarUltimoPago = Calendar.getInstance();
+		
 		if(credito.getUltimoPago() == null) {
 			if(compararFechaSinHora(credito.getFechaPrestamo(), hoy)<0) {
 				return true;
 			}
 		}else {
-			if(compararFechaSinHora(credito.getUltimoPago().getFechaPago(), hoy) < 0) {
+			calendarUltimoPago.setTime(credito.getUltimoPago().getFechaPago());
+			calendarUltimoPago.add(Calendar.DAY_OF_YEAR, credito.getPeriodicidadCobro());
+			if(compararFechaSinHora(calendarUltimoPago.getTime(), hoy) <= 0) {
 				return true;
 			}
 		}
 		return false;
 	}
 	
+	/**
+	 * 
+	 * @param fecha1
+	 * @param fecha2
+	 * @return 0 si son iguales; < 0 si fecha1 es anterior a fecha2; y > 0 si fecha1 es posterior a fecha2
+	 */
 	private int compararFechaSinHora(Date fecha1, Date fecha2) {
 		Calendar cal = Calendar.getInstance();
         cal.setTime(fecha1);

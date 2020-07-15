@@ -68,6 +68,9 @@ public class Prestamo implements Serializable {
 	@Column(name="saldo_mora")
 	private Double saldoMora;
 	
+	@Column(name="periodicidad_cobro")
+	private Integer periodicidadCobro;
+	
 	public Prestamo() {
 		pagosCliente = new ArrayList<>();
 	}
@@ -181,6 +184,14 @@ public class Prestamo implements Serializable {
 
 	public void setSaldoMora(Double saldoMora) {
 		this.saldoMora = saldoMora;
+	}
+
+	public Integer getPeriodicidadCobro() {
+		return periodicidadCobro;
+	}
+
+	public void setPeriodicidadCobro(Integer periodicidadCobro) {
+		this.periodicidadCobro = periodicidadCobro;
 	}
 
 	public double getSaldoActual() {
