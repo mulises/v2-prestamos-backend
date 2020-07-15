@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,7 +38,7 @@ public class PagoClienteController {
 	public ResponseEntity<?> save(@RequestBody PagoCliente pagoCliente) {
 		Map<String,Object> response = new HashMap<>();
 		
-		CuadreDiario cuadreDiarioDB = cuadreDiarioService.findCuadreDiarioActivoByIdRuta(pagoCliente.getPrestamo().getCliente().getRuta().getId());
+		CuadreDiario cuadreDiarioDB = validarCuadreDiarioActivo(pagoCliente.getPrestamo().getCliente().getRuta().getId());
 		
 		if(cuadreDiarioDB == null) {
 			response.put("mensajeError", "No existe cuadre de caja activo!");
@@ -66,6 +68,29 @@ public class PagoClienteController {
 		response.put("pagoCliente", pagoClienteNew);
 		
 		return new ResponseEntity<Map<String,Object>>(response, HttpStatus.OK);
+	}
+	
+	/**
+	 * 
+	 * @param idCartera
+	 * @return Lista de pagos para un cuadre de caja
+	 */
+	@GetMapping("/lista-pagos-cuadre-activo/{idCuadreCaja}")
+	public ResponseEntity<?> findByBetweenFecha(@PathVariable Long idCuadreCaja) {
+		
+		CuadreDiario cuadreCajaDB = cuadreDiarioService.findById(idCuadreCaja);  
+		
+		Date fechaFin = cuadreCajaDB.isConfirmado() ? cuadreCajaDB.getFechaConfirmacion() : new Date();
+		
+		List<PagoCliente> pagosCliente 
+		= pagoClienteService.findByBetweenFecha(cuadreCajaDB.getFechaCreacion(), fechaFin, cuadreCajaDB.getCartera().getId());
+		
+		return new ResponseEntity<List<PagoCliente>>(pagosCliente,HttpStatus.OK);
+	}
+	
+	private CuadreDiario validarCuadreDiarioActivo(Long idCartera) {
+		CuadreDiario cuadreDiarioDB = cuadreDiarioService.findCuadreDiarioActivoByIdRuta(idCartera);
+		return cuadreDiarioDB;
 	}
 	
 	private boolean compararFechaSinHora(Date date, Date hoy) {
