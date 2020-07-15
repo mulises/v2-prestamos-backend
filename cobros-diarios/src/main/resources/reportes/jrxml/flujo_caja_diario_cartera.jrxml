@@ -232,7 +232,7 @@
 				<textFieldExpression><![CDATA[$F{totalMulta}]]></textFieldExpression>
 			</textField>
 			<textField textAdjust="ScaleFont" isBlankWhenNull="true">
-				<reportElement isPrintRepeatedValues="false" mode="Opaque" x="430" y="0" width="145" height="30" isPrintWhenDetailOverflows="true" uuid="452e73fe-529a-4d55-a4bb-7d97afd8608b"/>
+				<reportElement mode="Transparent" x="430" y="0" width="145" height="30" isPrintWhenDetailOverflows="true" uuid="452e73fe-529a-4d55-a4bb-7d97afd8608b"/>
 				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
 					<pen lineWidth="0.25"/>
 				</box>
