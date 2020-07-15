@@ -11,17 +11,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mbaront.cobros.diarios.model.entidades.CuadreDiario;
 import com.mbaront.cobros.diarios.model.entidades.PagoCliente;
+import com.mbaront.cobros.diarios.model.entidades.Prestamo;
 import com.mbaront.cobros.diarios.model.services.ICuadreDiarioService;
 import com.mbaront.cobros.diarios.model.services.IPagoClienteService;
+import com.mbaront.cobros.diarios.model.services.IPrestamoService;
 
 @RequestMapping("/api-prestamos")
 @RestController
@@ -32,6 +36,9 @@ public class PagoClienteController {
 	
 	@Autowired 
 	private ICuadreDiarioService cuadreDiarioService;
+	
+	@Autowired
+	private IPrestamoService prestamoService;
 
 	@Secured("ROLE_SAVE_PAGO")
 	@PostMapping("/pago-cliente")
@@ -68,6 +75,20 @@ public class PagoClienteController {
 		response.put("pagoCliente", pagoClienteNew);
 		
 		return new ResponseEntity<Map<String,Object>>(response, HttpStatus.OK);
+	}
+	
+	
+	@DeleteMapping("/pago-cliente/delete/{idPagoCliente}")
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void eliminarPagoCLiente(@PathVariable Long idPagoCliente) {
+		PagoCliente pagoClienteDB = pagoClienteService.findById(idPagoCliente);
+		
+		if(!pagoClienteDB.getPrestamo().isActivo()) {
+			Prestamo prestamo = pagoClienteDB.getPrestamo();
+			prestamo.setActivo(true);
+			prestamoService.save(prestamo);
+		}
+		pagoClienteService.delete(idPagoCliente);		
 	}
 	
 	/**

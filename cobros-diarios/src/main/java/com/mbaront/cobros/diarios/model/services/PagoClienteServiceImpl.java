@@ -77,4 +77,14 @@ public class PagoClienteServiceImpl implements IPagoClienteService{
 		return pagoClienteDao.findByBetweenFecha(fechaInicio, fechaFin, idCartera);
 	}
 
+	@Override
+	public void delete(Long idPagoCliente) {
+		pagoClienteDao.deleteById(idPagoCliente);		
+	}
+
+	@Override
+	public PagoCliente findById(Long idPagoCliente) {
+		return pagoClienteDao.findById(idPagoCliente).orElse(null);
+	}
+
 }

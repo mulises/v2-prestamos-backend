@@ -10,6 +10,8 @@ import com.mbaront.cobros.diarios.model.entidades.Ruta;
 public interface IPagoClienteService {
 
 	public PagoCliente save(PagoCliente pagoCliente);
+	public PagoCliente findById(Long idPagoCliente);
+	public void delete(Long idPagoCliente);
 
 	public List<PagoCliente> reporteDiarioPago(Long idRuta);
 	public List<PagoCliente> pagosByPrestamo(Prestamo prestamo);

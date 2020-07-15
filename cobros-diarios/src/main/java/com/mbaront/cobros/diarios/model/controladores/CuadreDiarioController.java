@@ -37,7 +37,6 @@ import com.mbaront.cobros.diarios.model.services.ICuadreDiarioService;
 import com.mbaront.cobros.diarios.model.services.IPagoClienteService;
 import com.mbaront.cobros.diarios.model.services.IPrestamoService;
 import com.mbaront.cobros.diarios.model.services.IRutaService;
-import com.mbaront.cobros.diarios.model.services.RutaServiceImpl;
 
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperExportManager;
