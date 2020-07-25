@@ -13,8 +13,6 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -62,10 +60,6 @@ public class CuadreDiarioController {
 	@Autowired
 	private IRutaService rutaServiceImpl;
 	
-	private static final Logger logger = LoggerFactory.getLogger(CuadreDiarioController.class);
-
-
-	
 	
 	@Secured("ROLE_SAVE_CUADRE_DIA")
 	@PostMapping("/cuadre-diario")
@@ -100,6 +94,7 @@ public class CuadreDiarioController {
 		}
 
 		cuadreDiarioDB.setValorBase(cuadreDiario.getValorBase());
+		cuadreDiarioDB.setObservaciones(cuadreDiario.getObservaciones());
 
 		CuadreDiario cuadreDiarioNew = cuadreDiarioService.saveCuadreDiario(cuadreDiarioDB);
 
@@ -214,19 +209,16 @@ public class CuadreDiarioController {
 	@GetMapping("/download/{idCuadre}")
 	public void getDocument(HttpServletResponse response, @PathVariable Long idCuadre) throws IOException, JRException, URISyntaxException  {
 		
-		System.out.println("id cuadre " + idCuadre);
 		CuadreDiario cuadreDiario = cuadreDiarioService.findById(idCuadre);
 		
 		List<PagoCliente> listaPagos = pagoClienteService.findPagosByRutaAndFechaInicio(cuadreDiario.getFechaCreacion(), cuadreDiario.getCartera());
 		// creating datasource from bean list
 		JRBeanCollectionDataSource beanColDataSource = new JRBeanCollectionDataSource(listaPagos);
-		
-		Map parameters = new HashMap();
-		
+				
 		
 		InputStream sourceFileName = this.getClass().getResourceAsStream("/reportes/jrxml/SampleJasperTemplate.jasper");
 		
-		JasperPrint jasperPrint = JasperFillManager.fillReport(sourceFileName, parameters, beanColDataSource);		
+		JasperPrint jasperPrint = JasperFillManager.fillReport(sourceFileName, null, beanColDataSource);		
 		response.setContentType("application/x.xls");
 		response.addHeader("Content-Disposition", "inline; filename=nombre_backend.xls;");
 		
@@ -246,34 +238,29 @@ public class CuadreDiarioController {
 		
 		
 		Calendar fechaInicial = Calendar.getInstance();
-		fechaInicial.set(fechaInicio.getYear()+1900 ,fechaInicio.getMonth(), fechaInicio.getDate());
+		fechaInicial.setTime(fechaInicio);
 		fechaInicial.set(Calendar.HOUR_OF_DAY, 0);
 		fechaInicial.set(Calendar.MINUTE, 0);
 		fechaInicial.set(Calendar.SECOND, 0);
         
         Calendar fechaFinal = Calendar.getInstance();
-        fechaFinal.set(fechaFin.getYear()+1900, fechaFin.getMonth(), fechaFin.getDate());
+        fechaFinal.setTime(fechaFin);
         fechaFinal.set(Calendar.HOUR_OF_DAY, 23);
         fechaFinal.set(Calendar.MINUTE, 59);
         fechaFinal.set(Calendar.SECOND, 59);
                 
         Ruta ruta = rutaServiceImpl.findById(idCartera);
         
-        System.out.println("fecha Inicio " + fechaInicial.getTime());
-        System.out.println("fecha Inicio " + fechaFinal.getTime());
-        
 		List<CuadreDiario> cuadresDiario = cuadreDiarioService.findByCarteraAndFechaCreacionBetween(ruta,fechaInicial.getTime(), fechaFinal.getTime());
 		
 			
 		// creating datasource from bean list
 		JRBeanCollectionDataSource beanColDataSource = new JRBeanCollectionDataSource(cuadresDiario);
-		
-		Map parameters = new HashMap();
-		
+				
 		
 		InputStream sourceFileName = this.getClass().getResourceAsStream("/reportes/jrxml/flujo_caja_diario_cartera.jasper");
 		
-		JasperPrint jasperPrint = JasperFillManager.fillReport(sourceFileName, parameters, beanColDataSource);		
+		JasperPrint jasperPrint = JasperFillManager.fillReport(sourceFileName, null, beanColDataSource);		
 		response.setContentType("application/x.xls");
 		response.addHeader("Content-Disposition", "inline; filename=flujo_caja_diario_cartera.xls;");
 		
@@ -286,6 +273,7 @@ public class CuadreDiarioController {
 		exporterXLS.exportReport();		
 		
 	}
+	
 }
 
 
