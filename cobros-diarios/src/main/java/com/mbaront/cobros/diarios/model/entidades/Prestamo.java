@@ -32,7 +32,8 @@ public class Prestamo implements Serializable {
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "cliente_id")
-	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler", "prestamos", "usuarios", "fechaCreacion" })
+	@JsonIgnoreProperties
+	({ "hibernateLazyInitializer", "handler", "prestamos", "usuarios","enrutamiento","fechaCreacion"})
 	private Cliente cliente;
 
 	@Column(name = "monto_prestamo")
