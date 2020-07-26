@@ -36,7 +36,7 @@ public class PagoCliente implements Serializable {
 	@JoinColumn(name = "prestamo_id")
 	@JsonIgnoreProperties
 	({ "hibernateLazyInitializer", "handler", "pagosCliente","ultimoPago",
-		"periodicidadCobro","saldoMora","saldoAnterior","multaAmpliacion"})
+		"periodicidadCobro","saldoAnterior","multaAmpliacion"})
 	private Prestamo prestamo;
 
 	@PrePersist
