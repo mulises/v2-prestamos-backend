@@ -35,8 +35,7 @@ public class PagoCliente implements Serializable {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "prestamo_id")
 	@JsonIgnoreProperties
-	({ "hibernateLazyInitializer", "handler", "pagosCliente","ultimoPago",
-		"periodicidadCobro","saldoAnterior","multaAmpliacion"})
+	({ "hibernateLazyInitializer", "handler", "pagosCliente","ultimoPago"})
 	private Prestamo prestamo;
 
 	@PrePersist
