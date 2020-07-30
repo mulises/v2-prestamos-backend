@@ -77,9 +77,16 @@ public class PrestamoController {
 			response.put("mensajeError", "No tiene fondos suficientes, contacte al supervisor");
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.CONFLICT);
 		}		
-
-		Prestamo prestamoNew = prestamoService.save(creditoRequest);
-		response.put("prestamo", prestamoNew);
+		
+		Prestamo prestamoNew = null;
+		
+		try	{
+			prestamoNew = prestamoService.save(creditoRequest);
+			response.put("prestamo", prestamoNew);
+		}catch (Exception e) {
+			response.put("mensajeError", e.getMessage());
+			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 
 		return new ResponseEntity<Prestamo>(prestamoNew, HttpStatus.OK);
 	}
@@ -108,6 +115,9 @@ public class PrestamoController {
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.CONFLICT);
 		}	
 		
+		Prestamo creditoNew = prestamoService.save(creditoRequest);
+		response.put("prestamo", creditoNew);
+		
 		if(creditoRequest.isAmpliacion()) {
 			PagoCliente pagoFinalizacion = new PagoCliente();
 			pagoFinalizacion.setFechaPago(new Date());
@@ -116,8 +126,6 @@ public class PrestamoController {
 			pagoClienteService.save(pagoFinalizacion);
 		}
 		
-		Prestamo creditoNew = prestamoService.save(creditoRequest);
-		response.put("prestamo", creditoNew);
 
 		return new ResponseEntity<Prestamo>(creditoNew, HttpStatus.OK);
 		

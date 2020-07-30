@@ -186,9 +186,11 @@ public class CuadreDiarioController {
 		List<Prestamo> prestamosClientesDiario = prestamoService.findPrestamosByFechaInicioAndRuta(cuadreDiario.getFechaCreacion(),cuadreDiario.getCartera());
 		double totalPrestamos = 0;
 		double totalMultasPrestamo = 0;
+		double totalAbono = 0;
 		for (Prestamo prestamo : prestamosClientesDiario) {
 			totalPrestamos += prestamo.getMontoPrestamo();
 			totalMultasPrestamo += prestamo.isAmpliacion() ? prestamo.getMultaAmpliacion() : 0;
+			totalAbono += prestamo.getValorAbono();
 		}
 		Date fechaFin = cuadreDiario.getFechaConfirmacion() == null?new Date():cuadreDiario.getFechaConfirmacion();
 		
@@ -202,6 +204,7 @@ public class CuadreDiarioController {
 		cuadreDiario.setTotalPrestado(totalPrestamos);
 		cuadreDiario.setTotalRecaudado(totalPagosCliente);
 		cuadreDiario.setTotalGasto(totalGastosCuadreDiario);
+		cuadreDiario.setTotalAbono(totalAbono);
 		
 		return cuadreDiario;
 	}

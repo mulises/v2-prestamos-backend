@@ -32,8 +32,7 @@ public class Prestamo implements Serializable {
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "cliente_id")
-	@JsonIgnoreProperties
-	({ "hibernateLazyInitializer", "handler", "prestamos", "usuarios","fechaCreacion"})
+	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler", "prestamos", "usuarios", "fechaCreacion" })
 	private Cliente cliente;
 
 	@Column(name = "monto_prestamo")
@@ -50,28 +49,31 @@ public class Prestamo implements Serializable {
 	private Date fechaPrestamo;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "prestamo")
-	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler","prestamo"})
+	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler", "prestamo" })
 	private List<PagoCliente> pagosCliente;
-	
+
 	private boolean activo;
-	
-	@Column(name="porcentaje_prestamo")
+
+	@Column(name = "porcentaje_prestamo")
 	private Double porcentajePrestamo;
-	
+
 	private boolean ampliacion;
-	
-	@Column(name="multa_ampliacion")
+
+	@Column(name = "multa_ampliacion")
 	private Double multaAmpliacion;
-	
-	@Column(name="saldo_anterior")
+
+	@Column(name = "saldo_anterior")
 	private Double saldoAnterior;
-	
-	@Column(name="saldo_mora")
+
+	@Column(name = "saldo_mora")
 	private Double saldoMora;
-	
-	@Column(name="periodicidad_cobro")
+
+	@Column(name = "periodicidad_cobro")
 	private Integer periodicidadCobro;
-	
+
+	@Column(name = "valor_abono")
+	private Double valorAbono;
+
 	public Prestamo() {
 		pagosCliente = new ArrayList<>();
 	}
@@ -146,7 +148,7 @@ public class Prestamo implements Serializable {
 	public void setPagosCliente(List<PagoCliente> pagosCliente) {
 		this.pagosCliente = pagosCliente;
 	}
-	
+
 	public Double getPorcentajePrestamo() {
 		return porcentajePrestamo;
 	}
@@ -162,7 +164,7 @@ public class Prestamo implements Serializable {
 	public void setMultaAmpliacion(Double multaAmpliacion) {
 		this.multaAmpliacion = multaAmpliacion;
 	}
-	
+
 	public boolean isAmpliacion() {
 		return ampliacion;
 	}
@@ -170,7 +172,7 @@ public class Prestamo implements Serializable {
 	public void setAmpliacion(boolean ampliacion) {
 		this.ampliacion = ampliacion;
 	}
-	
+
 	public Double getSaldoAnterior() {
 		return saldoAnterior;
 	}
@@ -195,27 +197,36 @@ public class Prestamo implements Serializable {
 		this.periodicidadCobro = periodicidadCobro;
 	}
 
+	public Double getValorAbono() {
+		return valorAbono;
+	}
+
+	public void setValorAbono(Double valorAbono) {
+		this.valorAbono = valorAbono;
+	}
+
 	public double getSaldoActual() {
-		//el valor del porcentaje debe estar en la db como parametro
-		double saldoActual = getMontoPrestamo()*(1+(getPorcentajePrestamo()/100));
-		for(PagoCliente pagoCliente: pagosCliente) {
-			saldoActual -= pagoCliente.getValorPago(); 
+		// el valor del porcentaje debe estar en la db como parametro
+		double saldoActual = (getMontoPrestamo() * (1 + (getPorcentajePrestamo() / 100)) - getValorAbono());
+		for (PagoCliente pagoCliente : pagosCliente) {
+			saldoActual -= pagoCliente.getValorPago();
 		}
 		return saldoActual;
 	}
-	
+
 	public PagoCliente getUltimoPago() {
-		
-		if(!pagosCliente.isEmpty()) {
-			Comparator<PagoCliente> comparator = Comparator.comparing( PagoCliente::getFechaPago);
-			PagoCliente ultimoPago  = this.pagosCliente.stream().max(comparator).get();
-			ultimoPago.setPrestamo(null);			
+
+		if (!pagosCliente.isEmpty()) {
+			Comparator<PagoCliente> comparator = Comparator.comparing(PagoCliente::getFechaPago);
+			PagoCliente ultimoPago = this.pagosCliente.stream().max(comparator).get();
+			ultimoPago.setPrestamo(null);
 			return ultimoPago;
-		}else {
+		} else {
 			return null;
 		}
-		 
+
 	}
+
 	/**
 	 * 
 	 */

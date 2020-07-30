@@ -44,7 +44,7 @@ public class PagoClienteServiceImpl implements IPagoClienteService{
 			prestamo.setSaldoMora(prestamo.getSaldoMora()+(prestamo.getValorCuota() - pagoClienteNew.getValorPago()));
 		}
 		
-		if(totalPagosAlPrestamo >= totalAPagarPorPrestamo) {
+		if((totalPagosAlPrestamo + prestamo.getValorAbono()) >= totalAPagarPorPrestamo) {
 			prestamo.setActivo(false);
 			prestamoDao.save(prestamo);
 		}

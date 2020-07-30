@@ -28,7 +28,7 @@ public class CuadreDiario implements Serializable {
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "ruta_id")
-	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler", "clientes","empleados","usuarios" })
+	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler", "clientes", "empleados", "usuarios" })
 	private Ruta cartera;
 
 	@Column(name = "fecha_creacion")
@@ -43,21 +43,24 @@ public class CuadreDiario implements Serializable {
 
 	@Column(name = "total_prestado")
 	private Double totalPrestado;
-	
+
 	@Column(name = "total_multa")
 	private Double totalMulta;
-	
+
 	@Column(name = "total_gasto")
 	private Double totalGasto;
 
+	@Column(name = "total_abono")
+	private Double totalAbono;
+
 	private boolean confirmado;
-	
+
 	@Column(name = "fecha_confirmacion")
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date fechaConfirmacion;
 
 	private String observaciones;
-	
+
 	public CuadreDiario() {
 		// TODO Auto-generated constructor stub
 	}
@@ -129,6 +132,14 @@ public class CuadreDiario implements Serializable {
 
 	public void setTotalGasto(Double totalGasto) {
 		this.totalGasto = totalGasto;
+	}
+
+	public Double getTotalAbono() {
+		return totalAbono;
+	}
+
+	public void setTotalAbono(Double totalAbono) {
+		this.totalAbono = totalAbono;
 	}
 
 	public boolean isConfirmado() {
