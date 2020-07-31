@@ -53,6 +53,9 @@ public class CuadreDiario implements Serializable {
 	@Column(name = "total_abono")
 	private Double totalAbono;
 
+	@Column(name = "valor_real_recibido")
+	private Double valorRealRecibido;
+
 	private boolean confirmado;
 
 	@Column(name = "fecha_confirmacion")
@@ -140,6 +143,14 @@ public class CuadreDiario implements Serializable {
 
 	public void setTotalAbono(Double totalAbono) {
 		this.totalAbono = totalAbono;
+	}
+
+	public Double getValorRealRecibido() {
+		return valorRealRecibido;
+	}
+
+	public void setValorRealRecibido(Double valorRealRecibido) {
+		this.valorRealRecibido = valorRealRecibido;
 	}
 
 	public boolean isConfirmado() {

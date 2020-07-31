@@ -94,6 +94,7 @@ public class CuadreDiarioController {
 		}
 
 		cuadreDiarioDB.setValorBase(cuadreDiario.getValorBase());
+		cuadreDiarioDB.setValorRealRecibido(cuadreDiario.getValorRealRecibido());
 		cuadreDiarioDB.setObservaciones(cuadreDiario.getObservaciones());
 
 		CuadreDiario cuadreDiarioNew = cuadreDiarioService.saveCuadreDiario(cuadreDiarioDB);
