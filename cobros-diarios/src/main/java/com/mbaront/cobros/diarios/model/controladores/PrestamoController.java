@@ -11,11 +11,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mbaront.cobros.diarios.model.entidades.Cliente;
@@ -201,6 +203,38 @@ public class PrestamoController {
 		
 		return new ResponseEntity<Prestamo>(prestamoDB,HttpStatus.OK);
 	}
+	
+	/**
+	 * 
+	 * @param idCuadreDiario
+	 * @return lista de prestamos realizados entre el rango de fechas de un cuadre diario (fecha creacion - fecha confirmacion)
+	 */
+	@GetMapping("lista-prestamos/cuadre/{idCuadreDiario}")
+	public ResponseEntity<?> getListaPrestamosPorCuadre(@PathVariable Long idCuadreDiario) {
+		
+		CuadreDiario cuadreDiarioDB = cuadreDiarioService.findById(idCuadreDiario);
+		
+		Date fechaFin;
+		
+		if(cuadreDiarioDB.isConfirmado()) {
+			fechaFin = cuadreDiarioDB.getFechaConfirmacion();
+		}else {
+			fechaFin = new Date();
+		}
+		
+		List<Prestamo> prestamos = prestamoService.findPrestamoBetweenFecha(cuadreDiarioDB.getFechaCreacion(), fechaFin, cuadreDiarioDB.getCartera().getId());
+		
+		return new ResponseEntity<List<Prestamo>>(prestamos,HttpStatus.OK);		
+		
+	}
+	
+	
+	@DeleteMapping("eliminar/{idPrestamo}")
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void eliminarPrestamo(@PathVariable Long idPrestamo) {
+		prestamoService.eliminarPrestamo(idPrestamo);
+	}
+	
 	
 	
 	//////////////////////////////////////////////////////////////////////////////////////////

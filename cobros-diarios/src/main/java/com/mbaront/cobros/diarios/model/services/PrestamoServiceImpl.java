@@ -57,4 +57,9 @@ public class PrestamoServiceImpl implements IPrestamoService{
 		return prestamoDao.findPrestamoBetweenFecha(fechaInicio, fechaFin, idCartera);
 	}
 
+	@Override
+	public void eliminarPrestamo(Long idPrestamo) {
+		prestamoDao.deleteById(idPrestamo);		
+	}
+
 }

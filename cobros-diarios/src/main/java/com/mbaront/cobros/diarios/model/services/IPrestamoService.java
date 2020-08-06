@@ -17,5 +17,6 @@ public interface IPrestamoService {
 	public List<Prestamo> findAllActivo();
 	public List<Prestamo> findPrestamosByFechaInicioAndRuta(Date fechaInicio, Ruta ruta);
 	public List<Prestamo> findPrestamoBetweenFecha(Date fechaInicio, Date fechaFin, Long idCartera);
+	public void eliminarPrestamo(Long idPrestamo);
 	
 }
