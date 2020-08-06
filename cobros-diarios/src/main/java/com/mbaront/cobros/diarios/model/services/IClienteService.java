@@ -14,4 +14,6 @@ public interface IClienteService {
 	public List<Cliente> findByMayorQue(Integer enrutamiento);
 	public Cliente findByNumeroIdentificacionEntidad(String numeroIdentificacion);
 	public List<Cliente> findByNombreOrApellidoOrIdentificacionActivoByCartera(String nombre,Long idCartera);
+	public List<Cliente> findByNombreOrApellidoOrIdentificacion(String parametro);
+	
 }

@@ -39,12 +39,24 @@ public class ClienteController {
 	/**
 	 * Busca los clientes que contengan el parametro en nombres,apellidos o numero de identificacion
 	 * @param numeroIdentificacion
+	 * @param idCartera
 	 * @return Lista de Cliente
 	 */
 	@GetMapping("/clientes-activo-like-by-cartera/{term}/{idCartera}")
-	public List<Cliente> getClienteLike(@PathVariable String term, @PathVariable Long idCartera) {
+	public List<Cliente> getClienteLikeCartera(@PathVariable String term, @PathVariable Long idCartera) {
 		List<Cliente> clientesLike = clienteService.findByNombreOrApellidoOrIdentificacionActivoByCartera(term, idCartera);
 		
+		return clientesLike;
+	}
+	
+	/**
+	 * Busca los clientes que contengan el parametro en nombres,apellidos o numero de identificacion
+	 * @param parametro
+	 * @return Lista de Cliente
+	 */
+	@GetMapping("/clientes-like/{term}")
+	public List<Cliente> getClientesLikeT(@PathVariable String term) {
+		List<Cliente> clientesLike = clienteService.findByNombreOrApellidoOrIdentificacion(term);		
 		return clientesLike;
 	}
 	

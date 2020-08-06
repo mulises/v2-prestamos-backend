@@ -49,4 +49,9 @@ public class ClienteServiceImpl implements IClienteService{
 		return clienteDao.findByNombreOrApellidoOrIdentificacionActivoByCartera(nombre, idCartera);
 	}
 
+	@Override
+	public List<Cliente> findByNombreOrApellidoOrIdentificacion(String parametro) {
+		return clienteDao.findByNombreOrApellidoOrIdentificacion(parametro);
+	}
+
 }

@@ -13,6 +13,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.OrderBy;
 import javax.persistence.PrePersist;
 import javax.persistence.Table;
 
@@ -38,6 +39,7 @@ public class Cliente implements Serializable {
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "cliente")
 	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler", "cliente" })
+	@OrderBy("fechaPrestamo DESC")
 	private List<Prestamo> prestamos;
 
 	private Integer enrutamiento;
