@@ -1,6 +1,7 @@
 package com.mbaront.cobros.diarios.model.entidades;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -96,6 +97,32 @@ public class Ruta implements Serializable {
 
 	public void setPorcentajePrestamo(Double porcentajePrestamo) {
 		this.porcentajePrestamo = porcentajePrestamo;
+	}
+	
+	public double getCantidadPrestamosActivos() {
+		double prestamosActivo = 0;
+		if(getClientes() != null && !getClientes().isEmpty()) {
+			for (Cliente cliente : getClientes()) {
+				if(cliente.prestamoActivo()) {
+					prestamosActivo ++;
+				}
+			}
+		}
+		
+		return prestamosActivo;
+	}
+	
+	public double getSaldoPendienteTotal() {
+		double saldoTotalActivo = 0;
+		if(getClientes() != null && !getClientes().isEmpty()) {
+			for (Cliente cliente : getClientes()) {
+				if(cliente.prestamoActivo()) {
+					saldoTotalActivo += cliente.getSaldoPendiente();
+				}
+			}
+		}
+		
+		return saldoTotalActivo;
 	}
 	
 

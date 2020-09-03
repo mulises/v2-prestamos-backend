@@ -269,10 +269,11 @@ public class CuadreDiarioController {
 		response.addHeader("Content-Disposition", "inline; filename=flujo_caja_diario_cartera.xls;");
 		
 		JRXlsExporter exporterXLS = new JRXlsExporter();
+		exporterXLS.setParameter(JRXlsExporterParameter.IS_DETECT_CELL_TYPE,new Boolean(true));
 		exporterXLS.setParameter(JRXlsExporterParameter.JASPER_PRINT, jasperPrint);
 		exporterXLS.setParameter(JRXlsExporterParameter.OUTPUT_STREAM, response.getOutputStream());
 		exporterXLS.setParameter(JRXlsExporterParameter.IS_ONE_PAGE_PER_SHEET, Boolean.FALSE);
-		exporterXLS.setParameter(JRXlsExporterParameter.IS_REMOVE_EMPTY_SPACE_BETWEEN_ROWS, Boolean.TRUE);		
+		exporterXLS.setParameter(JRXlsExporterParameter.IS_REMOVE_EMPTY_SPACE_BETWEEN_ROWS, Boolean.TRUE);
 		
 		exporterXLS.exportReport();		
 		

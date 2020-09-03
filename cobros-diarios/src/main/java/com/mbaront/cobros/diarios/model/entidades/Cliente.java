@@ -118,6 +118,32 @@ public class Cliente implements Serializable {
 	public void setActivo(boolean activo) {
 		this.activo = activo;
 	}
+	
+	public boolean prestamoActivo() {
+		
+		if(getPrestamos() != null && !getPrestamos().isEmpty()) {
+			for (Prestamo prestamo: getPrestamos()) {
+				if(prestamo.isActivo())
+					return true;
+			}
+		}
+		
+		return false;
+	}
+	
+	public double getSaldoPendiente() {
+		
+		Double saldoPendiente = 0d;
+		
+		if(getPrestamos() != null && !getPrestamos().isEmpty()) {
+			for (Prestamo prestamo: getPrestamos()) {
+				if(prestamo.isActivo())
+					saldoPendiente += prestamo.getSaldoActual();
+			}
+		}
+		
+		return saldoPendiente;
+	}
 
 	/**
 	 * 
