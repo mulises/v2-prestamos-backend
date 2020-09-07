@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.mbaront.cobros.diarios.model.dao.IClienteDao;
 import com.mbaront.cobros.diarios.model.entidades.Cliente;
+import com.mbaront.cobros.diarios.model.entidades.Ruta;
 
 @Service
 public class ClienteServiceImpl implements IClienteService{
@@ -35,8 +36,8 @@ public class ClienteServiceImpl implements IClienteService{
 	}
 
 	@Override
-	public List<Cliente> findByMayorQue(Integer enrutamiento) {
-		return clienteDao.findByEnrutamientoGreaterThanEqualOrderByEnrutamientoDesc(enrutamiento);
+	public List<Cliente> findByMayorQue(Ruta ruta, Integer enrutamiento) {
+		return clienteDao.findByRutaAndEnrutamientoGreaterThanEqualOrderByEnrutamientoDesc(ruta, enrutamiento);
 	}
 
 	@Override

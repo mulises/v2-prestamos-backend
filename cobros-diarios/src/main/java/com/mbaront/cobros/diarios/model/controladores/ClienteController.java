@@ -4,6 +4,8 @@ package com.mbaront.cobros.diarios.model.controladores;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -63,7 +65,7 @@ public class ClienteController {
 	@PostMapping("/cliente")
 	private Cliente saveCliente(@RequestBody Cliente cliente) {
 		
-		List<Cliente> clientes = clienteService.findByMayorQue(cliente.getEnrutamiento());
+		List<Cliente> clientes = clienteService.findByMayorQue(cliente.getRuta(), cliente.getEnrutamiento());
 		clientes.forEach(client -> client.setEnrutamiento(client.getEnrutamiento()+1));
 		
 		if(cliente.getEntidad().getId() == null) {
@@ -76,15 +78,32 @@ public class ClienteController {
 		
 	}
 	
-	@PutMapping("/cliente/{idCliente}")
-	private Cliente updateCliente(@RequestBody Cliente cliente, @PathVariable Long idCliente) {
+	@PutMapping("/update-cliente/{idCliente}")
+	private ResponseEntity<?> updateCliente(@RequestBody Cliente cliente, @PathVariable Long idCliente) {
 		Cliente clienteDB = clienteService.findById(idCliente);
+		
+		Cliente clienteByIdentificacion = clienteService.findByNumeroIdentificacionEntidad(cliente.getEntidad().getNumeroIdentificacion()); 
+		
+		if( clienteByIdentificacion != null && clienteByIdentificacion.getId() != clienteDB.getId()) {
+			return new ResponseEntity<>("El numero de identificación existe para:  " + clienteByIdentificacion.getEntidad().getNombres() + " " + clienteByIdentificacion.getEntidad().getApellidos() ,HttpStatus.NOT_FOUND);
+		}
+		if(clienteDB.getEnrutamiento() != cliente.getEnrutamiento()) {
+			List<Cliente> clientes = clienteService.findByMayorQue(cliente.getRuta(),cliente.getEnrutamiento());
+			clientes.forEach(client -> {
+				if(client.getId() != clienteDB.getId()) {
+					client.setEnrutamiento(client.getEnrutamiento()+1);
+				}				
+			});
+		}
+		
 		clienteDB.setActivo(cliente.isActivo());
 		clienteDB.getEntidad().setNombres(cliente.getEntidad().getNombres());
 		clienteDB.getEntidad().setApellidos(cliente.getEntidad().getApellidos());
 		clienteDB.getEntidad().setDireccion(cliente.getEntidad().getDireccion());
 		clienteDB.getEntidad().setTelefono(cliente.getEntidad().getTelefono());
-		return clienteService.save(clienteDB);
+		clienteDB.getEntidad().setNumeroIdentificacion(cliente.getEntidad().getNumeroIdentificacion());
+		clienteDB.setEnrutamiento(cliente.getEnrutamiento());
+		return new ResponseEntity<Cliente>(clienteService.save(clienteDB), HttpStatus.OK);
 	}
 
 }
