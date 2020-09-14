@@ -20,5 +20,14 @@ public interface IRutaDao extends CrudRepository<Ruta, Long>{
 	 */
 	@Query("select NEW com.mbaront.cobros.diarios.model.entidades.Ruta(a.id, a.nombre,a.descripcion) from Ruta a where a.id = ?1")
 	public Ruta findByIdSinUsuarioSinClientes(Long idCartera);
+	
+	/**
+	 * 
+	 * @param idCartera
+	 * @return Cartera sin lista de clientes ni usuarios asignados
+	 */
+	@Query("select NEW com.mbaront.cobros.diarios.model.entidades.Ruta(a.id, a.nombre,a.descripcion) from Ruta a")
+	public List<Ruta> findByIdSinUsuarioSinClientes();
+
 
 }

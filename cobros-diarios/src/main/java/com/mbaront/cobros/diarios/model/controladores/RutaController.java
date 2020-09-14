@@ -1,5 +1,6 @@
 package com.mbaront.cobros.diarios.model.controladores;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,7 +16,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.mbaront.cobros.diarios.model.entidades.Prestamo;
 import com.mbaront.cobros.diarios.model.entidades.Ruta;
+import com.mbaront.cobros.diarios.model.services.IPrestamoService;
 import com.mbaront.cobros.diarios.model.services.IRutaService;
 
 @RequestMapping("api-prestamos/")
@@ -24,6 +27,9 @@ public class RutaController {
 	
 	@Autowired
 	private IRutaService rutaService;
+	
+	@Autowired
+	private IPrestamoService prestamoService;
 	
 	/**
 	 * Lista de rutas asignadas a un usuario
@@ -42,6 +48,31 @@ public class RutaController {
 	@GetMapping("/rutas")
 	public List<Ruta> getRutas() {
 		return rutaService.findAll();
+	}
+	
+	@GetMapping("/informe-global-carteras")
+	public ResponseEntity<?> informeGlobalCarteras() {
+		List<Ruta> carterasDB = rutaService.findByIdSinUsuarioSinClientes();
+		
+		Map<String,Object> carteraMap;
+		List<Map<String,Object>> listaCarteraMap = new ArrayList<Map<String,Object>>();
+		
+		for(Ruta cartera : carterasDB) {
+			carteraMap = new HashMap<>();
+			carteraMap.put("id", cartera.getId());
+			carteraMap.put("nombreCartera", cartera.getNombre());
+			
+			List<Prestamo> listaPrestamosActivo = prestamoService.findAllActivoByRuta(cartera.getId());
+			Double saldoPendienteTotal = listaPrestamosActivo.stream().mapToDouble(prestamo -> prestamo.getSaldoActual()).sum();
+			carteraMap.put("saldoPendienteTotal", saldoPendienteTotal);
+			carteraMap.put("cantidadPrestamosActivos", listaPrestamosActivo.size());		
+			
+			
+			listaCarteraMap.add(carteraMap);
+		}
+		
+		return new ResponseEntity<List<Map<String,Object>>>(listaCarteraMap,HttpStatus.OK);
+		
 	}
 	
 	/**

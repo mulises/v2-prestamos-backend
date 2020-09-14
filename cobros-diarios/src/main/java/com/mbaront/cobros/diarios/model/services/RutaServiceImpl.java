@@ -46,6 +46,11 @@ public class RutaServiceImpl implements IRutaService{
 	@Override
 	public Ruta findByIdSinUsuarioSinClientes(Long idCartera) {
 		return rutaDao.findByIdSinUsuarioSinClientes(idCartera);
+	}
+
+	@Override
+	public List<Ruta> findByIdSinUsuarioSinClientes() {
+		return rutaDao.findByIdSinUsuarioSinClientes();
 	}	
 
 }

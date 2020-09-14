@@ -150,6 +150,11 @@ public class PrestamoController {
 		return new ResponseEntity<Prestamo>(prestamoActivo, HttpStatus.OK);
 	}
 	
+	/**
+	 * 
+	 * @param idRuta
+	 * @return Prestamos Activos por la ruta
+	 */
 	@GetMapping("/prestamos-activo-ruta/{idRuta}")
 	public ResponseEntity<?> findAllActivoByRuta(@PathVariable Long idRuta) {
 

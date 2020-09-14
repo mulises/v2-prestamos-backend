@@ -16,5 +16,11 @@ public interface IRutaService {
 	 * @return Cartera sin lista de clientes ni usuarios asignados
 	 */
 	public Ruta findByIdSinUsuarioSinClientes(Long idCartera);
+	
+	/**
+	 * 
+	 * @return las carteras sin usuarios y clientes
+	 */
+	public List<Ruta> findByIdSinUsuarioSinClientes();
 
 }
