@@ -1,9 +1,15 @@
 package com.mbaront.cobros.diarios.model.controladores;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,6 +26,13 @@ import com.mbaront.cobros.diarios.model.entidades.Prestamo;
 import com.mbaront.cobros.diarios.model.entidades.Ruta;
 import com.mbaront.cobros.diarios.model.services.IPrestamoService;
 import com.mbaront.cobros.diarios.model.services.IRutaService;
+
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import net.sf.jasperreports.engine.export.JRXlsExporter;
+import net.sf.jasperreports.engine.export.JRXlsExporterParameter;
 
 @RequestMapping("api-prestamos/")
 @RestController
@@ -93,6 +106,41 @@ public class RutaController {
 		Map<String,Object> response = new HashMap<>();
 		response.put("cartera",rutaService.save(ruta));
 		return new ResponseEntity<Map<String,Object>>(response,HttpStatus.OK);
+	}
+	
+	
+	@GetMapping("/cartera/prestamosActivos/{idCartera}")
+	public void informePrestamosActivos(HttpServletResponse response, @PathVariable Long idCartera) throws IOException, JRException, URISyntaxException  {
+		                
+        Ruta rutaDB = rutaService.findByIdSinUsuarioSinClientes(idCartera);
+        
+		List<Prestamo> prestamosActivos = prestamoService.findAllActivoByRuta(idCartera);
+		
+			
+		// creating datasource from bean list
+		JRBeanCollectionDataSource beanColDataSource = new JRBeanCollectionDataSource(prestamosActivos);
+				
+		
+		InputStream sourceFileName = this.getClass().getResourceAsStream("/reportes/jrxml/informe_prestamos_activos_by_ruta.jasper");
+		
+		Map<String, Object> parametros = new HashMap<String, Object>();
+        parametros.put("NOMBRERUTA", rutaDB.getNombre());
+        parametros.put("FECHADESCARGA", new Date());
+        
+		
+		JasperPrint jasperPrint = JasperFillManager.fillReport(sourceFileName, parametros, beanColDataSource);		
+		response.setContentType("application/x.xls");
+		response.addHeader("Content-Disposition", "inline; filename=prestamos_activo.xls;");
+		
+		JRXlsExporter exporterXLS = new JRXlsExporter();
+		exporterXLS.setParameter(JRXlsExporterParameter.IS_DETECT_CELL_TYPE,new Boolean(true));
+		exporterXLS.setParameter(JRXlsExporterParameter.JASPER_PRINT, jasperPrint);
+		exporterXLS.setParameter(JRXlsExporterParameter.OUTPUT_STREAM, response.getOutputStream());
+		exporterXLS.setParameter(JRXlsExporterParameter.IS_ONE_PAGE_PER_SHEET, Boolean.FALSE);
+		exporterXLS.setParameter(JRXlsExporterParameter.IS_REMOVE_EMPTY_SPACE_BETWEEN_ROWS, Boolean.TRUE);
+		
+		exporterXLS.exportReport();		
+		
 	}
 
 }
