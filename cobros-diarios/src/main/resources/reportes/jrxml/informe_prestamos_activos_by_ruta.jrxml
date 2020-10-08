@@ -97,7 +97,7 @@
 					<rightPen lineWidth="0.25" lineColor="#110505"/>
 				</box>
 				<textElement textAlignment="Left" verticalAlignment="Middle"/>
-				<text><![CDATA[total a Pagar]]></text>
+				<text><![CDATA[Total a Pagar]]></text>
 			</staticText>
 			<staticText>
 				<reportElement key="staticText-5" mode="Opaque" x="376" y="0" width="89" height="25" backcolor="#D9D9D9" uuid="45796471-2631-4b4d-bab0-f893664a2238"/>
