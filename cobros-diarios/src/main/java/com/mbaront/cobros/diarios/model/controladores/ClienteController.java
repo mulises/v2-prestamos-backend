@@ -90,9 +90,8 @@ public class ClienteController {
 		if(clienteDB.getEnrutamiento() != cliente.getEnrutamiento()) {
 			List<Cliente> clientes = clienteService.findByMayorQue(cliente.getRuta(),cliente.getEnrutamiento());
 			clientes.forEach(client -> {
-				if(client.getId() != clienteDB.getId()) {
-					client.setEnrutamiento(client.getEnrutamiento()+1);
-				}				
+				client.setEnrutamiento(client.getEnrutamiento()+1);
+				clienteService.save(client);
 			});
 		}
 		
