@@ -26,27 +26,26 @@ public class PagoClienteServiceImpl implements IPagoClienteService{
 		
 		PagoCliente pagoClienteNew = pagoClienteDao.save(pagoCliente);
 		
-		Prestamo prestamo = pagoClienteNew.getPrestamo();
+		Prestamo prestamoDB = pagoClienteNew.getPrestamo();
 		
-		List<PagoCliente> pagosByPrestamo = pagosByPrestamo(prestamo);
+		List<PagoCliente> pagosByPrestamo = pagosByPrestamo(prestamoDB);
 		double totalPagosAlPrestamo = pagosByPrestamo
 				.stream()
 				.mapToDouble(PagoCliente::getValorPago)
 				.sum();
 		
-		double totalAPagarPorPrestamo = 
-				prestamo.getMontoPrestamo() * (1+prestamo.getPorcentajePrestamo()/100);
+		//double totalAPagarPorPrestamo = prestamoDB.getMontoPrestamo() * (1+prestamoDB.getPorcentajePrestamo()/100);
 		
 		//si el pago de la cuota es diferente al establecido se almacena como saldo en mora
 		//positivo para saldo por cobrar
 		//negativo para saldo a favor
-		if(prestamo.getValorCuota() != pagoClienteNew.getValorPago()) {
-			prestamo.setSaldoMora(prestamo.getSaldoMora()+(prestamo.getValorCuota() - pagoClienteNew.getValorPago()));
+		if(prestamoDB.getValorCuota() != pagoClienteNew.getValorPago()) {
+			prestamoDB.setSaldoMora(prestamoDB.getSaldoMora()+(prestamoDB.getValorCuota() - pagoClienteNew.getValorPago()));
 		}
 		
-		if((totalPagosAlPrestamo + prestamo.getValorAbono()) >= totalAPagarPorPrestamo) {
-			prestamo.setActivo(false);
-			prestamoDao.save(prestamo);
+		if((totalPagosAlPrestamo + prestamoDB.getValorAbono()) >= prestamoDB.getTotalPagar()) {
+			prestamoDB.setActivo(false);
+			prestamoDao.save(prestamoDB);
 		}
 		
 		return pagoClienteNew;
