@@ -65,16 +65,18 @@ public class ClienteController {
 	@PostMapping("/cliente")
 	private Cliente saveCliente(@RequestBody Cliente cliente) {
 		
-		List<Cliente> clientes = clienteService.findByMayorQue(cliente.getRuta(), cliente.getEnrutamiento());
-		clientes.forEach(client -> client.setEnrutamiento(client.getEnrutamiento()+1));
-		
 		if(cliente.getEntidad().getId() == null) {
 			cliente.setEntidad(entidadService.save(cliente.getEntidad()));
 		}
 		
-		clienteService.saveAll(clientes);
-		
-		return clienteService.save(cliente);
+		if(cliente.getEnrutamiento() !=null) {
+			List<Cliente> clientes = clienteService.findByMayorQue(cliente.getRuta(), cliente.getEnrutamiento());
+			clientes.forEach(client -> client.setEnrutamiento(client.getEnrutamiento()+1));
+			clienteService.saveAll(clientes);
+			return clienteService.save(cliente);
+		}else {
+			return clienteService.save(cliente);
+		}
 		
 	}
 	

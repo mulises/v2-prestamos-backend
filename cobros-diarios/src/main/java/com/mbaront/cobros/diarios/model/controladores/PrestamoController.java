@@ -24,10 +24,12 @@ import com.mbaront.cobros.diarios.model.entidades.Cliente;
 import com.mbaront.cobros.diarios.model.entidades.CuadreDiario;
 import com.mbaront.cobros.diarios.model.entidades.PagoCliente;
 import com.mbaront.cobros.diarios.model.entidades.Prestamo;
+import com.mbaront.cobros.diarios.model.services.CalculoTotalCuotaPrestamo;
 import com.mbaront.cobros.diarios.model.services.IClienteService;
 import com.mbaront.cobros.diarios.model.services.ICuadreDiarioService;
 import com.mbaront.cobros.diarios.model.services.IPagoClienteService;
 import com.mbaront.cobros.diarios.model.services.IPrestamoService;
+import com.mbaront.cobros.diarios.model.services.ParametroServiceImpl;
 
 @RestController
 @RequestMapping("/prestamo")
@@ -41,6 +43,10 @@ public class PrestamoController {
 	private IPagoClienteService pagoClienteService;
 	@Autowired
 	private ICuadreDiarioService cuadreDiarioService;
+	@Autowired
+	private CalculoTotalCuotaPrestamo calculoEmpresas;
+	@Autowired
+	private ParametroServiceImpl parametroService;
 
 	@Secured("ROLE_SAVE_PRESTAMO")
 	@PostMapping("/prestamo")
@@ -83,6 +89,9 @@ public class PrestamoController {
 		Prestamo prestamoNew = null;
 		
 		try	{
+			Map<String,Double> valoresCalculadosEmpresa = (calculoEmpresas.calcular(creditoRequest, parametroService.findByNombreParametro("CODIGO_EMPRESA").getValorString()));
+			creditoRequest.setValorCuota(valoresCalculadosEmpresa.get("valorCuota"));
+			creditoRequest.setTotalPagar(valoresCalculadosEmpresa.get("totalPagar"));
 			prestamoNew = prestamoService.save(creditoRequest);
 			response.put("prestamo", prestamoNew);
 		}catch (Exception e) {
@@ -273,7 +282,7 @@ public class PrestamoController {
 		if(cuadreDiario.getFechaConfirmacion() != null) {
 			fechaFin = cuadreDiario.getFechaConfirmacion();
 		}
-		// Se calcula el valor total de llos prestamos realizados
+		// Se calcula el valor total de los prestamos realizados
 		List<Prestamo> prestamosClientesDiario = prestamoService.findPrestamoBetweenFecha(cuadreDiario.getFechaCreacion(),fechaFin, cuadreDiario.getCartera().getId());
 		double totalPrestamosClientesDia = 0;
 		for (Prestamo prestamo : prestamosClientesDiario) {

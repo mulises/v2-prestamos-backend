@@ -13,7 +13,7 @@ import com.mbaront.cobros.diarios.model.entidades.Entidad;
 public class EntidadServiceImpl implements IEntidadService{
 
 	@Autowired
-	IEntidadDao entidadDao;
+	private IEntidadDao entidadDao;
 	
 	@Override
 	@Transactional(readOnly = true)

@@ -11,6 +11,7 @@ import org.springframework.security.oauth2.provider.token.TokenEnhancer;
 import org.springframework.stereotype.Component;
 
 import com.mbaront.cobros.diarios.model.entidades.Usuario;
+import com.mbaront.cobros.diarios.model.services.ParametroServiceImpl;
 import com.mbaront.cobros.diarios.model.services.UsuarioService;
 
 
@@ -20,6 +21,9 @@ public class InfoAdicionalToken implements TokenEnhancer{
 	@Autowired
 	private UsuarioService usuarioService;
 	
+	@Autowired
+	private ParametroServiceImpl parametroService;
+	
 	@Override
 	public OAuth2AccessToken enhance(OAuth2AccessToken accessToken, OAuth2Authentication authentication) {
 		
@@ -27,6 +31,7 @@ public class InfoAdicionalToken implements TokenEnhancer{
 		
 		Map<String, Object> info = new HashMap<>();
 		info.put("nombre", usuario.getEntidad().getNombres());
+		info.put("codigo_empresa", parametroService.findByNombreParametro("CODIGO_EMPRESA").getValorString());
 		
 		((DefaultOAuth2AccessToken) accessToken).setAdditionalInformation(info);
 		return accessToken;

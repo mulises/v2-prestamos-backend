@@ -74,6 +74,9 @@ public class Prestamo implements Serializable {
 	@Column(name = "valor_abono")
 	private Double valorAbono;
 
+	@Column(name = "total_pagar")
+	private Double totalPagar;
+
 	public Prestamo() {
 		pagosCliente = new ArrayList<>();
 	}
@@ -203,6 +206,14 @@ public class Prestamo implements Serializable {
 
 	public void setValorAbono(Double valorAbono) {
 		this.valorAbono = valorAbono;
+	}
+
+	public Double getTotalPagar() {
+		return totalPagar;
+	}
+
+	public void setTotalPagar(Double totalPagar) {
+		this.totalPagar = totalPagar;
 	}
 
 	public double getSaldoActual() {
