@@ -217,8 +217,7 @@ public class Prestamo implements Serializable {
 	}
 
 	public double getSaldoActual() {
-		// el valor del porcentaje debe estar en la db como parametro
-		double saldoActual = (getMontoPrestamo() * (1 + (getPorcentajePrestamo() / 100)) - getValorAbono());
+		double saldoActual = getTotalPagar();
 		for (PagoCliente pagoCliente : pagosCliente) {
 			saldoActual -= pagoCliente.getValorPago();
 		}
