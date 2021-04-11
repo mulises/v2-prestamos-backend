@@ -1,5 +1,6 @@
 package com.mbaront.cobros.diarios.model.services;
 
+import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -35,7 +36,9 @@ public class CalculoTotalCuotaPrestamo {
 		valoresCalculados.put("totalPagar", totalPagar);
 		
 		//calculo de la cuota
-		valoresCalculados.put("valorCuota", totalPagar/prestamo.getCantidadCuota());
+		DecimalFormat df = new DecimalFormat("#.00");
+		String cuotaRedondeada = df.format(totalPagar/prestamo.getCantidadCuota());
+		valoresCalculados.put("valorCuota", Double.parseDouble(cuotaRedondeada));
 		
 		return valoresCalculados;
 		
