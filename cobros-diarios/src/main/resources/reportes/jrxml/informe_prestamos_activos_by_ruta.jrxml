@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.12.2.final using JasperReports Library version 6.12.2-75c5e90a222ab406e416cbf590a5397028a52de3  -->
+<!-- Created with Jaspersoft Studio version 6.16.0.final using JasperReports Library version 6.16.0-48579d909b7943b64690c65c71e07e0b80981928  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="informe_prestamos_activos_by_ruta" pageWidth="595" pageHeight="842" whenNoDataType="NoPages" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isIgnorePagination="true" uuid="2dd1cb34-4daa-458c-aec4-76b40b14e28d">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<property name="ireport.scriptlethandling" value="0"/>
@@ -16,13 +16,14 @@
 	<field name="montoPrestamo" class="java.lang.Double"/>
 	<field name="porcentajePrestamo" class="java.lang.Double"/>
 	<field name="ultimoPago.fechaPago" class="java.sql.Timestamp"/>
+	<field name="totalPagar" class="java.lang.Double"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
 	<title>
 		<band height="40" splitType="Stretch">
 			<textField isBlankWhenNull="false">
-				<reportElement key="textField-4" mode="Opaque" x="0" y="0" width="555" height="40" backcolor="#D9D9D9" uuid="9a5ee7b8-e20b-436c-940f-ee6e5dd59a8c"/>
+				<reportElement key="textField-4" mode="Opaque" x="0" y="0" width="493" height="40" backcolor="#D9D9D9" uuid="9a5ee7b8-e20b-436c-940f-ee6e5dd59a8c"/>
 				<box>
 					<topPen lineWidth="0.25" lineColor="#140606"/>
 					<leftPen lineWidth="0.25" lineColor="#140606"/>
@@ -78,7 +79,7 @@
 				<text><![CDATA[Fecha Prestamo]]></text>
 			</staticText>
 			<staticText>
-				<reportElement key="staticText-3" mode="Opaque" x="92" y="0" width="197" height="25" backcolor="#D9D9D9" uuid="d0ea321b-3d7b-4795-b5ee-548033fe7622"/>
+				<reportElement key="staticText-3" mode="Opaque" x="92" y="0" width="135" height="25" backcolor="#D9D9D9" uuid="d0ea321b-3d7b-4795-b5ee-548033fe7622"/>
 				<box>
 					<topPen lineWidth="0.25" lineColor="#110505"/>
 					<leftPen lineWidth="0.25" lineColor="#110505"/>
@@ -89,7 +90,7 @@
 				<text><![CDATA[Cliente]]></text>
 			</staticText>
 			<staticText>
-				<reportElement key="staticText-4" mode="Opaque" x="289" y="0" width="87" height="25" backcolor="#D9D9D9" uuid="fbe48a2c-5cbf-4fd9-9350-c5fd2969b1e3"/>
+				<reportElement key="staticText-4" mode="Opaque" x="227" y="0" width="87" height="25" backcolor="#D9D9D9" uuid="fbe48a2c-5cbf-4fd9-9350-c5fd2969b1e3"/>
 				<box>
 					<topPen lineWidth="0.25" lineColor="#110505"/>
 					<leftPen lineWidth="0.25" lineColor="#110505"/>
@@ -100,7 +101,7 @@
 				<text><![CDATA[Total a Pagar]]></text>
 			</staticText>
 			<staticText>
-				<reportElement key="staticText-5" mode="Opaque" x="376" y="0" width="89" height="25" backcolor="#D9D9D9" uuid="45796471-2631-4b4d-bab0-f893664a2238"/>
+				<reportElement key="staticText-5" mode="Opaque" x="314" y="0" width="89" height="25" backcolor="#D9D9D9" uuid="45796471-2631-4b4d-bab0-f893664a2238"/>
 				<box>
 					<topPen lineWidth="0.25" lineColor="#110505"/>
 					<leftPen lineWidth="0.25" lineColor="#110505"/>
@@ -111,7 +112,7 @@
 				<text><![CDATA[Saldo Actual]]></text>
 			</staticText>
 			<staticText>
-				<reportElement key="staticText-6" mode="Opaque" x="465" y="0" width="90" height="25" backcolor="#D9D9D9" uuid="63645d39-1343-470a-97e5-50ba9b0f703b"/>
+				<reportElement key="staticText-6" mode="Opaque" x="403" y="0" width="90" height="25" backcolor="#D9D9D9" uuid="63645d39-1343-470a-97e5-50ba9b0f703b"/>
 				<box>
 					<topPen lineWidth="0.25" lineColor="#110505"/>
 					<leftPen lineWidth="0.25" lineColor="#110505"/>
@@ -137,7 +138,7 @@
 				<textFieldExpression><![CDATA[$F{fechaPrestamo}]]></textFieldExpression>
 			</textField>
 			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
-				<reportElement key="textField-1" x="376" y="0" width="89" height="20" uuid="6c1cac22-5156-4aba-991c-58f849ce4e2c"/>
+				<reportElement key="textField-1" x="314" y="0" width="89" height="20" uuid="6c1cac22-5156-4aba-991c-58f849ce4e2c"/>
 				<box>
 					<pen lineWidth="0.25"/>
 					<topPen lineWidth="0.25"/>
@@ -148,7 +149,7 @@
 				<textFieldExpression><![CDATA[$F{saldoActual}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement key="textField-2" x="92" y="0" width="197" height="20" isPrintWhenDetailOverflows="true" uuid="4ed5a133-e72e-4423-b796-9534783148a0"/>
+				<reportElement key="textField-2" x="92" y="0" width="135" height="20" isPrintWhenDetailOverflows="true" uuid="4ed5a133-e72e-4423-b796-9534783148a0"/>
 				<box>
 					<pen lineWidth="0.25"/>
 					<topPen lineWidth="0.25"/>
@@ -159,7 +160,7 @@
 				<textFieldExpression><![CDATA[$F{cliente.entidad.nombres} + " " + $F{cliente.entidad.apellidos}]]></textFieldExpression>
 			</textField>
 			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
-				<reportElement key="textField-3" x="289" y="0" width="87" height="20" uuid="503660ae-465d-41a2-9b67-3dcb7ee2d784"/>
+				<reportElement key="textField-3" x="227" y="0" width="87" height="20" uuid="503660ae-465d-41a2-9b67-3dcb7ee2d784"/>
 				<box>
 					<pen lineWidth="0.25"/>
 					<topPen lineWidth="0.25"/>
@@ -167,10 +168,10 @@
 					<bottomPen lineWidth="0.25"/>
 					<rightPen lineWidth="0.25"/>
 				</box>
-				<textFieldExpression><![CDATA[new Double( $F{montoPrestamo}.doubleValue() * (1+($F{porcentajePrestamo}.doubleValue()/100)) )]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{totalPagar}]]></textFieldExpression>
 			</textField>
 			<textField textAdjust="StretchHeight" pattern="dd/MM/yyyy" isBlankWhenNull="true">
-				<reportElement key="textField-5" x="465" y="0" width="90" height="20" uuid="548c0dd4-8e87-4447-bed9-5172032a8983"/>
+				<reportElement key="textField-5" x="403" y="0" width="90" height="20" uuid="548c0dd4-8e87-4447-bed9-5172032a8983"/>
 				<box>
 					<pen lineWidth="0.25"/>
 					<topPen lineWidth="0.25"/>
