@@ -171,7 +171,7 @@
 				<textFieldExpression><![CDATA[$F{ultimoPago.fechaPago}]]></textFieldExpression>
 			</textField>
 			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
-				<reportElement key="textField-1" x="230" y="0" width="84" height="20" uuid="7cd844b5-f04a-46bd-8da1-0c95016b5bbd"/>
+				<reportElement key="textField-1" x="227" y="0" width="87" height="20" uuid="7cd844b5-f04a-46bd-8da1-0c95016b5bbd"/>
 				<box>
 					<pen lineWidth="0.25"/>
 					<topPen lineWidth="0.25"/>
