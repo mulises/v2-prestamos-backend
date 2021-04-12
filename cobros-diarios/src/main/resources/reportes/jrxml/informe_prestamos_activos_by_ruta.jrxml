@@ -159,17 +159,6 @@
 				</box>
 				<textFieldExpression><![CDATA[$F{cliente.entidad.nombres} + " " + $F{cliente.entidad.apellidos}]]></textFieldExpression>
 			</textField>
-			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
-				<reportElement key="textField-3" x="227" y="0" width="87" height="20" uuid="503660ae-465d-41a2-9b67-3dcb7ee2d784"/>
-				<box>
-					<pen lineWidth="0.25"/>
-					<topPen lineWidth="0.25"/>
-					<leftPen lineWidth="0.25"/>
-					<bottomPen lineWidth="0.25"/>
-					<rightPen lineWidth="0.25"/>
-				</box>
-				<textFieldExpression><![CDATA[$F{totalPagar}]]></textFieldExpression>
-			</textField>
 			<textField textAdjust="StretchHeight" pattern="dd/MM/yyyy" isBlankWhenNull="true">
 				<reportElement key="textField-5" x="403" y="0" width="90" height="20" uuid="548c0dd4-8e87-4447-bed9-5172032a8983"/>
 				<box>
@@ -180,6 +169,17 @@
 					<rightPen lineWidth="0.25"/>
 				</box>
 				<textFieldExpression><![CDATA[$F{ultimoPago.fechaPago}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement key="textField-1" x="230" y="0" width="84" height="20" uuid="7cd844b5-f04a-46bd-8da1-0c95016b5bbd"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textFieldExpression><![CDATA[$F{totalPagar}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
