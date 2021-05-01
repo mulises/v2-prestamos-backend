@@ -1,5 +1,11 @@
 package com.mbaront.cobros.diarios.model.controladores;
 
+import java.io.IOException;
+import java.nio.file.FileSystem;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -17,8 +23,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.mbaront.cobros.diarios.model.entidades.Cliente;
 import com.mbaront.cobros.diarios.model.entidades.CuadreDiario;
@@ -95,6 +103,7 @@ public class PrestamoController {
 			prestamoNew = prestamoService.save(creditoRequest);
 			response.put("prestamo", prestamoNew);
 		}catch (Exception e) {
+			e.printStackTrace();
 			response.put("mensajeError", e.getMessage());
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
@@ -249,6 +258,30 @@ public class PrestamoController {
 		prestamoService.eliminarPrestamo(idPrestamo);
 	}
 	
+	@PostMapping("/upload")
+	public ResponseEntity<?> upload(@RequestParam("imagen") MultipartFile imagen, @RequestParam("idPrestamo") Long idPrestamo) {
+		Map<String,Object> response = new HashMap<String, Object>();
+		
+		if(!imagen.isEmpty()) {
+			String nombreImagen = imagen.getOriginalFilename();
+			FileSystem sistemaFicheros=FileSystems.getDefault();
+			Path rutaArchivo = sistemaFicheros.getPath("/Users/liliamariajimenezrodriguez/Documents/mbaront/proyectos/prestapp/documentos_soportes/").resolve(nombreImagen).toAbsolutePath();
+			
+			try {
+				Files.copy(imagen.getInputStream(), rutaArchivo);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			response.put("mensaje", "Imagen subida correctamente");
+		}
+		
+		
+		
+		return new ResponseEntity<Map<String,Object>>(response,HttpStatus.CREATED);	
+		
+	}
 	
 	
 	//////////////////////////////////////////////////////////////////////////////////////////
